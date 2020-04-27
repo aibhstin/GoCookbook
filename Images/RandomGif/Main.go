@@ -8,19 +8,29 @@ import (
     "log"
     "time"
     "math/rand"
+    "strconv"
 )
 
 func main() {
+    var imgSize = 200
+    var err error
+    if len(os.Args) == 2 {
+        imgSize, err = strconv.Atoi(os.Args[1])
+        if err != nil {
+            log.Fatal(err)
+        }
+    }
+    
     rand.Seed(time.Now().UnixNano())
     const frames = 64
 
     var imageList []*image.Paletted
 
     for f := 0; f < frames; f++ {
-        rect := image.Rect(0, 0, 200, 200)
+        rect := image.Rect(0, 0, imgSize, imgSize)
         img := image.NewPaletted(rect, palette.WebSafe)
-        for i := 0; i < 200; i++ {
-            for j := 0; j < 200; j++ {
+        for i := 0; i < imgSize; i++ {
+            for j := 0; j < imgSize; j++ {
                 randColor := rand.Intn(len(palette.WebSafe)-1)
                 img.SetColorIndex(i, j, uint8(randColor))
             }
